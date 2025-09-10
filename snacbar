@@ -324,7 +324,7 @@ export class ModernSnackbarService {
   }
 }
 
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 import { Component, Input, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -607,6 +607,12 @@ import { SnackbarInstance } from '../interfaces/snackbar.interface';
     ])
   ]
 })
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 export class ModernSnackbarComponent implements OnInit, OnDestroy {
   @Input() snackbar!: SnackbarInstance;
   
@@ -1062,6 +1068,7 @@ export class ModernSnackbarComponent implements OnInit, OnDestroy {
   }
 }
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
