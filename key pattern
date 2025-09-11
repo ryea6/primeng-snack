@@ -1,0 +1,44 @@
+
+## **Key Patterns:**
+
+### **✅ SwitchMap - Chain Operations**
+
+```typescript
+this.snackbar.withLoadingUpdates('Creating...', 
+  this.service.create(data), { successMessage: 'Created!' }
+).pipe(
+  switchMap(result => this.snackbar.withLoadingUpdates('Loading...', 
+    this.service.get(result.id), { successMessage: 'Loaded!' }
+  ))
+).subscribe();
+```
+
+### **✅ ForkJoin - Parallel Operations**
+
+```typescript
+forkJoin({
+  claims: this.snackbar.withLoadingUpdates('Loading claims...', 
+    this.service.getClaims(), { successMessage: 'Claims loaded!' }),
+  users: this.snackbar.withLoadingUpdates('Loading users...', 
+    this.userService.getUsers(), { successMessage: 'Users loaded!' })
+}).subscribe();
+```
+
+
+
+### **✅ Map & Filter - Transform Data**
+
+```typescript
+this.snackbar.withLoadingUpdates('Loading...', 
+  this.service.getData(), { successMessage: 'Loaded!' }
+).pipe(
+  map(data => data.filter(item => item.active)),
+  map(data => data.map(item => ({ ...item, formatted: true })))
+).subscribe();
+```
+
+
+
+
+
+
