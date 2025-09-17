@@ -1,0 +1,432 @@
+import { Component } from "@angular/core"
+import { CommonModule } from "@angular/common"
+import { FormsModule } from "@angular/forms"
+import { ModernLoadingButtonComponent } from "./modern-loading-button.component"
+import type { ModernSnackbarService } from "../services/modern-snackbar.service"
+import type { ClaimsDataService } from "../services/claims-data.service"
+
+@Component({
+  selector: "app-button-usage-example",
+  standalone: true,
+  imports: [CommonModule, FormsModule, ModernLoadingButtonComponent],
+  template: `
+    <div class="container">
+      <h1>🚀 Button Usage Examples</h1>
+      
+      <!-- Basic Usage -->
+      <div class="section">
+        <h2>Basic Usage</h2>
+        <div class="button-row">
+          <app-modern-loading-button
+            text="Save"
+            icon="save"
+            type="primary"
+            [loading]="saveLoading"
+            (clicked)="save()">
+          </app-modern-loading-button>
+          
+          <app-modern-loading-button
+            text="Delete"
+            icon="delete"
+            type="danger"
+            [loading]="deleteLoading"
+            (clicked)="delete()">
+          </app-modern-loading-button>
+          
+          <app-modern-loading-button
+            text="Refresh"
+            icon="refresh"
+            type="secondary"
+            [loading]="refreshLoading"
+            (clicked)="refresh()">
+          </app-modern-loading-button>
+        </div>
+      </div>
+
+      <!-- Form Example -->
+      <div class="section">
+        <h2>Form Integration</h2>
+        <div class="form">
+          <div class="form-group">
+            <label>Claim Amount:</label>
+            <input type="number" [(ngModel)]="claimAmount" class="form-input">
+          </div>
+          
+          <div class="form-group">
+            <label>Description:</label>
+            <textarea [(ngModel)]="description" class="form-input"></textarea>
+          </div>
+          
+          <div class="form-actions">
+            <app-modern-loading-button
+              text="Submit Form"
+              icon="send"
+              type="primary"
+              [loading]="submitLoading"
+              (clicked)="submitForm()">
+            </app-modern-loading-button>
+            
+            <app-modern-loading-button
+              text="Save Draft"
+              icon="drafts"
+              type="secondary"
+              [loading]="draftLoading"
+              (clicked)="saveDraft()">
+            </app-modern-loading-button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Different Sizes -->
+      <div class="section">
+        <h2>Custom Sizes</h2>
+        <div class="button-row">
+          <app-modern-loading-button
+            text="Small"
+            icon="add"
+            type="success"
+            width="100px"
+            fontSize="12px"
+            [loading]="smallLoading"
+            (clicked)="smallAction()">
+          </app-modern-loading-button>
+          
+          <app-modern-loading-button
+            text="Large Button"
+            icon="download"
+            type="info"
+            width="200px"
+            fontSize="16px"
+            [loading]="largeLoading"
+            (clicked)="largeAction()">
+          </app-modern-loading-button>
+        </div>
+      </div>
+
+      <!-- Bulk Operations -->
+      <div class="section">
+        <h2>Bulk Operations</h2>
+        <div class="button-row">
+          <app-modern-loading-button
+            text="Approve All"
+            icon="check_circle"
+            type="success"
+            [loading]="bulkLoading"
+            (clicked)="bulkApprove()">
+          </app-modern-loading-button>
+          
+          <app-modern-loading-button
+            text="Export Data"
+            icon="file_download"
+            type="info"
+            [loading]="exportLoading"
+            (clicked)="exportData()">
+          </app-modern-loading-button>
+        </div>
+      </div>
+
+      <!-- Code Example -->
+      <div class="code-section">
+        <h3>💻 Code Example</h3>
+        <pre><code>// ✅ SIMPLE USAGE PATTERN
+export class MyComponent {{
+  saveLoading = false;
+
+  constructor(
+    private snackbar: ModernSnackbarService,
+    private claimsService: ClaimsDataService
+  ) {{}}
+
+  save(): void {{
+    this.saveLoading = true; // ← Button shows loading
+
+    this.snackbar.withLoadingUpdates(
+      'Saving claim...',
+      this.claimsService.updateClaim(id, data),
+      {{
+        successMessage: 'Claim saved!',
+        onSuccess: () => this.saveLoading = false, // ← Stop loading
+        onError: () => this.saveLoading = false
+      }}
+    ).subscribe();
+  }}
+}}
+
+// Template:
+&lt;app-modern-loading-button
+  text="Save"
+  icon="save"
+  [loading]="saveLoading"
+  (clicked)="save()"&gt;
+&lt;/app-modern-loading-button&gt;</code></pre>
+      </div>
+    </div>
+  `,
+  styles: [
+    `
+    .container {
+      padding: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section {
+      margin: 32px 0;
+      padding: 20px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      background: white;
+    }
+
+    .section h2 {
+      margin-top: 0;
+      color: #374151;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .form {
+      background: #f9fafb;
+      padding: 20px;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .code-section {
+      margin: 32px 0;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+
+    .code-section h3 {
+      margin-top: 0;
+      color: #374151;
+    }
+
+    pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    h1 {
+      text-align: center;
+      color: #111827;
+      margin-bottom: 32px;
+    }
+  `,
+  ],
+})
+export class ButtonUsageExampleComponent {
+  // Loading states for each button
+  saveLoading = false
+  deleteLoading = false
+  refreshLoading = false
+  submitLoading = false
+  draftLoading = false
+  smallLoading = false
+  largeLoading = false
+  bulkLoading = false
+  exportLoading = false
+
+  // Form data
+  claimAmount = 5000
+  description = ""
+
+  constructor(
+    private snackbar: ModernSnackbarService,
+    private claimsService: ClaimsDataService,
+  ) {}
+
+  // ✅ BASIC OPERATIONS
+  save(): void {
+    this.saveLoading = true
+
+    this.snackbar
+      .withLoadingUpdates("Saving claim...", this.claimsService.updateClaimSrvc("123", { status: "saved" }), {
+        successMessage: "Claim saved successfully!",
+        onSuccess: () => (this.saveLoading = false),
+        onError: () => (this.saveLoading = false),
+      })
+      .subscribe()
+  }
+
+  delete(): void {
+    this.deleteLoading = true
+
+    this.snackbar
+      .withLoadingUpdates("Deleting claim...", this.claimsService.deleteClaimSrvc("123"), {
+        successMessage: "Claim deleted successfully!",
+        onSuccess: () => (this.deleteLoading = false),
+        onError: () => (this.deleteLoading = false),
+      })
+      .subscribe()
+  }
+
+  refresh(): void {
+    this.refreshLoading = true
+
+    this.claimsService.getAllClaimsSrvc().subscribe({
+      next: () => {
+        this.refreshLoading = false
+        this.snackbar.success("Data refreshed!", "Success", { duration: 2000 })
+      },
+      error: () => {
+        this.refreshLoading = false
+        this.snackbar.error("Failed to refresh data")
+      },
+    })
+  }
+
+  // ✅ FORM OPERATIONS
+  submitForm(): void {
+    this.submitLoading = true
+
+    const formData = {
+      claimNumber: "CLM-FORM-001",
+      claimant: "Form User",
+      amount: this.claimAmount,
+      description: this.description,
+      status: "submitted",
+    }
+
+    this.snackbar
+      .withLoadingUpdates("Submitting form...", this.claimsService.createClaimSrvc(formData), {
+        successMessage: "Form submitted successfully!",
+        onSuccess: (result) => {
+          this.submitLoading = false
+          console.log("Form submitted:", result)
+          // Reset form or navigate
+          this.claimAmount = 0
+          this.description = ""
+        },
+        onError: () => (this.submitLoading = false),
+      })
+      .subscribe()
+  }
+
+  saveDraft(): void {
+    this.draftLoading = true
+
+    const draftData = {
+      claimNumber: "CLM-DRAFT-001",
+      claimant: "Draft User",
+      amount: this.claimAmount,
+      description: this.description,
+      status: "draft",
+    }
+
+    this.claimsService.createClaimSrvc(draftData).subscribe({
+      next: () => {
+        this.draftLoading = false
+        this.snackbar.success("Draft saved!", "Success", { duration: 2000 })
+      },
+      error: () => {
+        this.draftLoading = false
+        this.snackbar.error("Failed to save draft")
+      },
+    })
+  }
+
+  // ✅ SIZE EXAMPLES
+  smallAction(): void {
+    this.smallLoading = true
+
+    setTimeout(() => {
+      this.smallLoading = false
+      this.snackbar.success("Small action completed!", "Success", { duration: 2000 })
+    }, 1500)
+  }
+
+  largeAction(): void {
+    this.largeLoading = true
+
+    this.snackbar
+      .withLoadingUpdates("Processing large action...", this.claimsService.exportClaimsSrvc("pdf"), {
+        successMessage: "Large action completed!",
+        onSuccess: () => (this.largeLoading = false),
+        onError: () => (this.largeLoading = false),
+      })
+      .subscribe()
+  }
+
+  // ✅ BULK OPERATIONS
+  bulkApprove(): void {
+    this.bulkLoading = true
+
+    const updates = [
+      { id: "1", data: { status: "approved" } },
+      { id: "2", data: { status: "approved" } },
+      { id: "3", data: { status: "approved" } },
+    ]
+
+    this.snackbar
+      .withLoadingUpdates("Approving all claims...", this.claimsService.bulkUpdateSrvc(updates), {
+        successMessage: "All claims approved successfully!",
+        onSuccess: () => (this.bulkLoading = false),
+        onError: () => (this.bulkLoading = false),
+      })
+      .subscribe()
+  }
+
+  exportData(): void {
+    this.exportLoading = true
+
+    this.snackbar
+      .withLoadingUpdates("Preparing export...", this.claimsService.exportClaimsSrvc("excel"), {
+        successMessage: "Export ready for download!",
+        onSuccess: (blob) => {
+          this.exportLoading = false
+          // Trigger download
+          const url = window.URL.createObjectURL(blob)
+          const a = document.createElement("a")
+          a.href = url
+          a.download = "claims-export.xlsx"
+          a.click()
+          window.URL.revokeObjectURL(url)
+        },
+        onError: () => (this.exportLoading = false),
+      })
+      .subscribe()
+  }
+}
