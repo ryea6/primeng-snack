@@ -1,0 +1,88 @@
+import { Component, Input, Output, EventEmitter } from "@angular/core"
+import { CommonModule } from "@angular/common"
+import { ButtonModule } from "primeng/button"
+import { MatIconModule } from "@angular/material/icon"
+
+@Component({
+  selector: "app-modern-loading-button",
+  standalone: true,
+  imports: [CommonModule, ButtonModule, MatIconModule],
+  template: `
+    <!-- ✅ CLEAN: PrimeNG pButton with built-in loading -->
+    <p-button
+      [label]="text"
+      [loading]="loading"
+      [disabled]="disabled || loading"
+      [style]="getButtonStyle()"
+      [severity]="type"
+      (onClick)="handleClick()"
+      class="modern-button">
+      
+      <!-- Always show Material icon when icon is provided -->
+      <ng-container *ngIf="icon">
+        <mat-icon class="button-icon">{{ icon }}</mat-icon>
+      </ng-container>
+    </p-button>
+  `,
+  styles: [
+    `
+    .modern-button {
+      transition: all 0.3s ease;
+    }
+
+    .button-icon {
+      font-size: inherit !important;
+      width: auto !important;
+      height: auto !important;
+      margin-right: 8px;
+    }
+
+    /* PrimeNG loading state is handled automatically */
+    :host ::ng-deep .p-button.p-button-loading {
+      pointer-events: none;
+    }
+
+    /* Custom button variants */
+    :host ::ng-deep .p-button-success {
+      background: #10b981;
+      border-color: #10b981;
+    }
+
+    :host ::ng-deep .p-button-danger {
+      background: #ef4444;
+      border-color: #ef4444;
+    }
+  `,
+  ],
+})
+export class ModernLoadingButtonComponent {
+  @Input() text = "Button"
+  @Input() icon?: string
+  @Input() disabled = false
+  @Input() type: "primary" | "secondary" | "success" | "danger" | "warning" | "info" = "primary"
+  @Input() width?: string
+  @Input() fontSize?: string
+  @Input() loading = false // ✅ This controls PrimeNG's built-in loading state
+
+  @Output() clicked = new EventEmitter<void>()
+
+  handleClick(): void {
+    if (!this.loading && !this.disabled) {
+      this.clicked.emit()
+    }
+  }
+
+  getButtonStyle(): any {
+    const style: any = {}
+
+    if (this.width) {
+      style.width = this.width
+    }
+
+    if (this.fontSize) {
+      style.fontSize = this.fontSize
+    }
+
+    return style
+  }
+}
